@@ -8,7 +8,49 @@ document.addEventListener('DOMContentLoaded', function () {
             generateTable(headers, jewelleryData[category], category);
         }
     }
+     // Global search functionality
+     let globalSearchInput = document.getElementById('globalSearch');
+    globalSearchInput.addEventListener('keyup', function () {
+        globalSearch(this.value.toLowerCase());
+    });
 });
+function globalSearch(searchTerm) {
+    let tables = document.querySelectorAll('.dataTable');
+    tables.forEach(table => {
+        let rows = table.getElementsByTagName('tr');
+        let headers = table.rows[1].cells; // Assuming second row has headers
+
+        for (let i = 2; i < rows.length; i++) { // Start from 2 to skip header and filter rows
+            let row = rows[i];
+            let rowContainsSearchTerm = Array.from(row.cells).some(cell => {
+                return cell.textContent.toLowerCase().includes(searchTerm);
+            });
+
+            row.style.display = rowContainsSearchTerm ? "" : "none";
+        }
+
+        updateNoDataMessage(table, searchTerm);
+    });
+}
+function updateNoDataMessage(table, searchTerm) {
+    let visibleRowsCount = Array.from(table.rows).slice(2).filter(row => row.style.display !== 'none').length;
+    let noDataMessageId = 'noDataMessage_' + table.id;
+    let noDataMessage = document.getElementById(noDataMessageId);
+
+    if (visibleRowsCount === 0) {
+        if (!noDataMessage) {
+            noDataMessage = document.createElement('p');
+            noDataMessage.id = noDataMessageId;
+            noDataMessage.className = 'center-message';
+            noDataMessage.textContent = 'No records found.';
+            table.parentElement.appendChild(noDataMessage);
+        } else {
+            noDataMessage.style.display = '';
+        }
+    } else if (noDataMessage) {
+        noDataMessage.style.display = 'none';
+    }
+}
 
 let currentSortColumn = null;
 let currentSortOrder = 'asc'; // or 'desc'
@@ -54,11 +96,11 @@ function generateTable(headers, categoryData, categoryName) {
     });
 
     // Optionally, create a title for the table
-    if (categoryName) {
-        let title = document.createElement('h3');
-        title.textContent = categoryName;
-        tableContainer.appendChild(title);
-    }
+    // if (categoryName) {
+    //     let title = document.createElement('h3');
+    //     title.textContent = categoryName;
+    //     tableContainer.appendChild(title);
+    // }
 
     tableContainer.appendChild(table);
     if (categoryData.length === 0) {

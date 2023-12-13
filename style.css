@@ -111,6 +111,19 @@ tr:hover {
     color: #ffc107;
 }
 
+#searchContainer {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#globalSearch {
+    padding: 8px 15px;
+    width: 200px; /* Adjust width as needed */
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+
 @media screen and (max-width: 768px) {
     #tableContainer {
         max-width: 100%;
