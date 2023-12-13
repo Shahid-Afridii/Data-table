@@ -13,7 +13,22 @@ document.addEventListener('DOMContentLoaded', function () {
     globalSearchInput.addEventListener('keyup', function () {
         globalSearch(this.value.toLowerCase());
     });
+    updateTotalRecordsCount();
 });
+
+function updateTotalRecordsCount() {
+    let totalRecords = 0;
+    let tables = document.querySelectorAll('.dataTable');
+    tables.forEach(table => {
+        // Count only visible rows in tbody
+        Array.from(table.tBodies).forEach(tbody => {
+            totalRecords += Array.from(tbody.rows).filter(row => row.style.display !== "none").length;
+        });
+    });
+    let recordsCountContainer = document.getElementById('recordsCountContainer');
+    recordsCountContainer.textContent = `Total Records: ${totalRecords}`;
+}
+
 function globalSearch(searchTerm) {
     let tables = document.querySelectorAll('.dataTable');
     tables.forEach(table => {
@@ -30,6 +45,7 @@ function globalSearch(searchTerm) {
         }
 
         updateNoDataMessage(table, searchTerm);
+        updateTotalRecordsCount();
     });
 }
 function updateNoDataMessage(table, searchTerm) {
@@ -146,6 +162,7 @@ function filterTable(table, columnIndex) {
     } else if (noDataMessage) {
         noDataMessage.style.display = 'none';
     }
+    updateTotalRecordsCount();
 }
 
 function sortTable(column) {
