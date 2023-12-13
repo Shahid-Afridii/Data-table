@@ -149,3 +149,22 @@ tr:hover td {
         overflow-x: auto; /* Allows table to scroll horizontally on small screens */
     }
 }
+
+#exportButtons {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#exportButtons button {
+    margin: 5px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#exportButtons button:hover {
+    background-color: #0056b3;
+}

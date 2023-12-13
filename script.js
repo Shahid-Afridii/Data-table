@@ -1,4 +1,4 @@
-// script.js
+// / script.js
 document.addEventListener('DOMContentLoaded', function () {
     
     for (let category in jewelleryData) {
@@ -14,6 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
         globalSearch(this.value.toLowerCase());
     });
     updateTotalRecordsCount();
+     // Export buttons event listeners
+     document.getElementById('exportToPdf').addEventListener('click', exportTableToPDF);
+     document.getElementById('exportToExcel').addEventListener('click', exportTableToExcel);
 });
 
 function updateTotalRecordsCount() {
@@ -182,5 +185,47 @@ function sortTable(column) {
     currentSortOrder = sortOrder;
  
 }
+function exportTableToPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({
+        orientation: 'landscape', // Use landscape orientation
+        unit: 'pt', // Points can allow for finer control
+        format: 'a4', // You can try 'a3' for a larger format if necessary
+    });
+
+    doc.autoTable({
+        html: document.querySelector('.dataTable'),
+        theme: 'grid',
+        headStyles: { fillColor: [22, 160, 133] }, // Add style as needed
+        styles: {
+            minCellHeight: 8,
+            fontSize: 6, // Smaller font size
+            cellWidth: 'wrap' // Wrap text to fit as much as possible
+        },
+        columnStyles: {
+            0: { cellWidth: 30 }, // Adjust cell widths as necessary
+            // ...other columns
+        },
+        didParseCell: function (data) {
+            // Adjust cell size dynamically if necessary
+        },
+        margin: { top: 20, right: 10, bottom: 20, left: 10 },
+        startY: 10,
+    });
+
+    // Save the created PDF
+    doc.save('table-data.pdf');
+}
 
 
+
+// Function to export table to Excel
+function exportTableToExcel() {
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.table_to_sheet(document.querySelector('.dataTable'));
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    
+    // Trigger a download
+    XLSX.writeFile(workbook, 'table-data.xlsx');
+}
