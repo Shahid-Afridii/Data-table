@@ -61,6 +61,12 @@ tr:hover {
     top: 0; /* Stick to the top of the viewport */
     text-align: center; /* Center the text */
 }
+.center-message {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #666;
+}
 
 
 

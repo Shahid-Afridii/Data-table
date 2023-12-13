@@ -61,18 +61,48 @@ function generateTable(headers, categoryData, categoryName) {
     }
 
     tableContainer.appendChild(table);
+    if (categoryData.length === 0) {
+        let noDataMessage = document.createElement('p');
+        noDataMessage.className = 'center-message'; // Add class for styling
+        noDataMessage.textContent = 'No records found.';
+        tableContainer.appendChild(noDataMessage);
+    } else {
+        tableContainer.appendChild(table);
+    }
 }
 
 
 function filterTable(table, columnIndex) {
     let filter = table.getElementsByTagName('input')[columnIndex].value.toLowerCase();
     let rows = table.getElementsByTagName('tr');
+    let visibleRowsCount = 0;
     for (let i = 2; i < rows.length; i++) { // Start from 2 to skip header and filter rows
         let cell = rows[i].getElementsByTagName('td')[columnIndex];
         if (cell) {
             let cellText = cell.textContent || cell.innerText;
-            rows[i].style.display = cellText.toLowerCase().indexOf(filter) > -1 ? "" : "none";
+            if (cellText.toLowerCase().indexOf(filter) > -1) {
+                rows[i].style.display = "";
+                visibleRowsCount++;
+            } else {
+                rows[i].style.display = "none";
+            }
         }
+    }
+
+    // Display a message if no rows are visible
+    let noDataMessage = document.getElementById('noDataMessage');
+    if (visibleRowsCount === 0) {
+        if (!noDataMessage) {
+            noDataMessage = document.createElement('p');
+            noDataMessage.id = 'noDataMessage';
+            noDataMessage.className = 'center-message'; // Add class for styling
+            noDataMessage.textContent = 'No records found.';
+            table.parentElement.appendChild(noDataMessage);
+        } else {
+            noDataMessage.style.display = '';
+        }
+    } else if (noDataMessage) {
+        noDataMessage.style.display = 'none';
     }
 }
 
