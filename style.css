@@ -7,35 +7,66 @@ body {
     padding: 20px;
 }
 
+#searchContainer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+#globalSearch {
+    padding: 8px 15px;
+    width: 300px; /* Increased width for better visual */
+    border-radius: 5px;
+    border: 1px solid #ccc; /* Lighter border color */
+    font-size: 16px; /* Larger font for better readability */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+    transition: border-color 0.3s ease-in-out;
+}
+
+#globalSearch:focus {
+    border-color: #007bff; /* Highlight color on focus */
+    outline: none; /* Remove the default focus outline */
+}
+
+#recordsCountContainer {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 18px; /* Larger font size */
+    color: #555; /* Slightly darker font color for contrast */
+}
+
 #tableContainer {
-    margin-top: 20px;
     margin: 20px auto;
-    overflow-x: auto;
-    overflow-y: auto; /* Enable vertical scrolling */
-    max-width: 1400px; /* Set a max-width for larger screens */
-    max-height: 800px; /* Set a max-height for your table container */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* subtle shadow for depth */
+    overflow-x: auto; /* Horizontal scroll if needed */
+    overflow-y: auto; /* Vertical scroll if needed */
+    max-width: 1400px; /* Maximum width of the table container */
+    max-height: 750px; /* Maximum height of the table container */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for depth perception */
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    transition: all 0.3s ease; /* smooth transition for hover effects */
-}
-
-table, th, td {
-    border: 1px solid #ddd;
 }
 
 th, td {
     text-align: left;
-    padding: 12px 15px;
+    padding: 15px; /* More padding for a spacious look */
+    border-bottom: 1px solid #ddd; /* Only bottom border for a cleaner look */
 }
 
 th {
-    background-color: #007bff;
+    background-color: #0056b3; /* Darker blue for a more premium feel */
     color: #ffffff;
-    cursor: pointer; /* Indicates interactivity */
+    font-size: 16px; /* Larger font size */
+    position: sticky; /* Sticky header */
+    top: 0; /* Stick to the top */
+    z-index: 10;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+th:hover {
+    background-color: #003d82; /* Darker shade on hover for interaction */
 }
 
 tr:nth-child(even) {
@@ -43,32 +74,24 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-    background-color: #e9ecef; /* hover effect for rows */
-    transition: background-color 0.3s ease;
+    background-color: #e9ecef;
 }
 
-#tableContainer h3 {
-    padding: 10px 0; /* Top and bottom padding */
-    background-color: #f8f8f8; /* Light grey background, adjust as needed */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow for depth */
-    margin: 0; /* Reset margins */
-    width: 100%; /* Full width */
-    box-sizing: border-box; /* Make sure padding doesn't affect the total width */
-    z-index: 10; /* Ensure it's above other content */
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 0; /* Stick to the top of the viewport */
-    text-align: center; /* Center the text */
+tr td {
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Animation for hover effect */
 }
+
+tr:hover td {
+    transform: translateY(-2px); /* Slight raise effect on hover */
+    background-color: #e9ecef;
+}
+
 .center-message {
     text-align: center;
     margin-top: 20px;
     font-size: 1.2em;
     color: #666;
 }
-
-
 
 #pagination {
     text-align: center;
@@ -111,25 +134,11 @@ tr:hover {
     color: #ffc107;
 }
 
-#searchContainer {
-    display: flex;
-    justify-content: center; /* This will center the search box */
-    margin-bottom: 10px; /* Consistent margin with the records count */
-}
-
-#globalSearch {
-    padding: 8px 15px;
-    width: 200px; /* Adjust width as needed */
-    border-radius: 5px;
-    border: 1px solid #ddd;
-}
-#recordsCountContainer {
-    text-align: center; /* Center the total records count */
-    margin-bottom: 10px; /* Spacing between the count and the table */
-}
-
-
 @media screen and (max-width: 768px) {
+    #globalSearch {
+        width: 100%; /* Full width on small screens */
+    }
+
     #tableContainer {
         max-width: 100%;
         margin: 10px;
@@ -138,6 +147,5 @@ tr:hover {
     table {
         display: block;
         overflow-x: auto; /* Allows table to scroll horizontally on small screens */
-        /* Consider adding overflow-y as well, if needed for your design */
     }
 }
