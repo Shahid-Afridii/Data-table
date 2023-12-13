@@ -17,8 +17,68 @@ document.addEventListener('DOMContentLoaded', function () {
      // Export buttons event listeners
      document.getElementById('exportToPdf').addEventListener('click', exportTableToPDF);
      document.getElementById('exportToExcel').addEventListener('click', exportTableToExcel);
+     document.getElementById('importButton').addEventListener('click', function() {
+        var fileInput = document.getElementById('importFromExcel');
+        var file = fileInput.files[0];
+        importDataFromExcel(file);
+    });
 });
+function importDataFromExcel(file) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var data = new Uint8Array(e.target.result);
+        var workbook = XLSX.read(data, {type: 'array'});
 
+        var sheetName = workbook.SheetNames[0];
+        var sheet = workbook.Sheets[sheetName];
+        var jsonData = XLSX.utils.sheet_to_json(sheet);
+
+        // Clear existing data
+        document.getElementById('tableContainer').innerHTML = '';
+
+        // Assuming the JSON data will be an array of objects, where the keys are the column headers
+        if(jsonData.length > 0) {
+            var headers = Object.keys(jsonData[0]);
+            generateTable(headers, jsonData);
+        }
+    };
+
+    if(file) {
+        reader.readAsArrayBuffer(file);
+    } else {
+        alert('Please select a file to import.');
+    }
+}
+
+function generateTable(headers, data) {
+    let tableContainer = document.getElementById('tableContainer');
+    tableContainer.innerHTML = ''; // Clear any existing table
+
+    let table = document.createElement('table');
+    table.className = 'dataTable';
+    let thead = table.createTHead();
+    let tbody = table.createTBody();
+
+    // Generate header row
+    let headerRow = thead.insertRow();
+    headers.forEach(header => {
+        let th = document.createElement('th');
+        th.textContent = header;
+        headerRow.appendChild(th);
+    });
+
+    // Populate data rows
+    data.forEach(item => {
+        let row = tbody.insertRow();
+        headers.forEach(header => {
+            let cell = row.insertCell();
+            cell.textContent = item[header];
+        });
+    });
+
+    tableContainer.appendChild(table);
+    updateTotalRecordsCount(); // Update the total records count display
+}
 function updateTotalRecordsCount() {
     let totalRecords = 0;
     let tables = document.querySelectorAll('.dataTable');
